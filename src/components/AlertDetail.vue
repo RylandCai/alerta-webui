@@ -414,6 +414,23 @@
                   <div class="d-flex align-top">
                     <div class="flex xs3 text-xs-left">
                       <div class="grey--text">
+                        {{ $t('Project') }}
+                      </div>
+                    </div>
+                    <div class="flex xs6 text-xs-left">
+                      <div
+                        class="clickable"
+                        @click="queryBy('project', item.project)"
+                      >
+                        {{ item.project }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex xs12 ma-1">
+                  <div class="d-flex align-top">
+                    <div class="flex xs3 text-xs-left">
+                      <div class="grey--text">
                         {{ $t('Environment') }}
                       </div>
                     </div>
@@ -579,7 +596,7 @@
                     </div>
                     <div class="flex xs6 text-xs-left">
                       <div>
-                        <span v-html="item.text" />
+                        <span>{{ item.text }}</span>
                       </div>
                     </div>
                   </div>
@@ -727,8 +744,9 @@
                       <div
                         v-else-if="typeof value === 'string' && (value.includes('http://') || value.includes('https://'))"
                         class="link-text"
-                        v-html="value"
-                      />
+                      >
+                        {{ value }}
+                      </div>
                       <div
                         v-else
                         class="clickable"
