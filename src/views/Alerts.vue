@@ -246,7 +246,7 @@ export default {
       return this.$store.getters.getPreference('showAllowedEnvs')
     },
     projects() {
-      return ['ALL'].concat(this.$store.getters['alerts/projects'](this.showAllowedEnvs))
+      return ['ALL'].concat(this.$store.getters['alerts/projects'])
     },
     projectCounts() {
       return this.$store.getters['alerts/counts']

@@ -105,6 +105,7 @@ export default {
     },
     setFilter(filter) {
       this.$store.dispatch('alerts/setFilter', {
+        project: filter.get('project'),
         environment: filter.get('environment'),
         text: filter.get('text'),
         status: filter.has('status') ? filter.getAll('status') : null,
