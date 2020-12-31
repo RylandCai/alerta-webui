@@ -88,6 +88,7 @@ export const en = {
   LastReceiveTime: 'Last Receive Time',
   Customer: 'Customer',
   Service: 'Service',
+  Project: 'Project',
   Environment: 'Environment',
   Resource: 'Resource',
   Event: 'Event',
@@ -246,11 +247,11 @@ export const en = {
   ValueWidth: 'Value Width',
   DescriptionWidth: 'Description Text Width',
   RefreshInterval: 'Refresh interval',
+  hours: 'hours',
   seconds: 'seconds',
   minutes: 'minutes',
   AckTimeout: 'Ack Timeout',
   ShelveTimeout: 'Shelve timeout',
-  hours: 'hours',
 
   // Profile
   Profile: 'Profile',

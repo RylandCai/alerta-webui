@@ -8,6 +8,7 @@ declare global {
 const GoogleAnalytics = {
   install(Vue, { trackingId, router }) {
     if (!trackingId) {
+      console.info('No trackingId, GoogleAnalytics disabled.')
       Vue.prototype.$track = () => {}
     } else {
       const script = document.createElement('script')

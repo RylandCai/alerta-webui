@@ -40,6 +40,7 @@ const state = {
   actions: [],
   filter: {
     text: null,
+    project: null,
     environment: null,
     status: null,
     service: null,
@@ -48,7 +49,7 @@ const state = {
   },
 
   tracking_id: null,
-  refresh_interval: 5*1000,  // milliseconds
+  refresh_interval: 5 * 1000,  // milliseconds
   environments: []
 }
 

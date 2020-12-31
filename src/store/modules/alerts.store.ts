@@ -11,6 +11,7 @@ const state = {
 
   alerts: [],
   selected: [], // used by multi-select checkboxes
+  projects: [],
   environments: [],
   services: [],
   groups: [],
@@ -31,6 +32,7 @@ const state = {
   // query, filter and pagination
   query: {}, // URLSearchParams
   filter: {  // local defaults
+    project: null,
     environment: null,
     text: null,
     status: ['open', 'ack'],
@@ -80,6 +82,9 @@ const mutations = {
   SET_NOTES(state, notes): any {
     state.notes = notes
   },
+  SET_PPROJECTS(state, projects): any {
+    state.projects = projects
+  },
   SET_ENVIRONMENTS(state, environments): any {
     state.environments = environments
   },
@@ -122,6 +127,7 @@ const actions = {
     let params = new URLSearchParams(state.query)
 
     // append filter params to query params
+    state.filter.project && params.append('project', state.filter.project)
     state.filter.environment && params.append('environment', state.filter.environment)
     state.filter.status && state.filter.status.map(st => params.append('status', st))
     state.filter.customer && state.filter.customer.map(c => params.append('customer', c))
@@ -236,8 +242,7 @@ const actions = {
   deleteAlert({ commit, dispatch }, alertId) {
     return AlertsApi.deleteAlert(alertId)
   },
-
-  getEnvironments({ commit, state }) {
+  getProjects({ commit, state }) {
     // get "lucene" query params (?q=)
     let params = new URLSearchParams(state.query)
 
@@ -271,13 +276,16 @@ const actions = {
       )
     }
 
-    return AlertsApi.getEnvironments(params)
+    return AlertsApi.getProjects(params)
+      .then(({ projects }) => commit('SET_PPROJECTS', projects))
+  },
+  getEnvironments({ commit, state }) {
+    return AlertsApi.getEnvironments({})
       .then(({ environments }) => commit('SET_ENVIRONMENTS', environments))
   },
   getServices({ commit }) {
-    return AlertsApi.getServices({}).then(({ services }) =>
-      commit('SET_SERVICES', services)
-    )
+    return AlertsApi.getServices({})
+      .then(({ services }) => commit('SET_SERVICES', services))
   },
   getGroups({ commit }) {
     return AlertsApi.getGroups({}).then(({ groups }) => commit('SET_GROUPS', groups))
@@ -285,7 +293,6 @@ const actions = {
   getTags({ commit }) {
     return AlertsApi.getTags({}).then(({ tags }) => commit('SET_TAGS', tags))
   },
-
   getTopOffenders({ commit }) {
     return AlertsApi.getTop10Count({}).then(({ top10 }) => commit('SET_TOP_OFFENDERS', top10))
   },
@@ -323,18 +330,26 @@ const getters = {
       return state.alerts
     }
   },
+  counts: state => {
+    return state.projects.reduce((grp, e) => {
+      grp[e.project] = e.count
+      grp['ALL'] = grp['ALL'] + e.count
+      return grp
+    }, {'ALL': 0})
+    // return state.environments.reduce((grp, e) => {
+    //   grp[e.environment] = e.count
+    //   grp['ALL'] = grp['ALL'] + e.count
+    //   return grp
+    // }, {'ALL': 0})
+  },
+  projects: state => {
+    return state.projects.map(p => p.project).sort()
+  },
   environments: (state, getters, rootState) => (showAllowedEnvs = true) => {
     if (showAllowedEnvs) {
       return [...new Set([...rootState.config.environments || [],...state.environments.map(e => e.environment)])].sort()
     }
     return state.environments.map(e => e.environment).sort()
-  },
-  counts: state => {
-    return state.environments.reduce((grp, e) => {
-      grp[e.environment] = e.count
-      grp['ALL'] = grp['ALL'] + e.count
-      return grp
-    }, {'ALL': 0})
   },
   services: state => {
     return state.services.map(s => s.service).sort()
