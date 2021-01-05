@@ -211,7 +211,6 @@ const actions = {
   untagAlert({ commit, dispatch }, [alertId, tags]) {
     return AlertsApi.untagAlert(alertId, tags)
   },
-
   addNote({ commit, dispatch }, [alertId, text]) {
     return AlertsApi.addNote(alertId, {
       text: text
