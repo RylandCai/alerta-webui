@@ -148,6 +148,7 @@
         >
           <keep-alive max="1">
             <alert-list
+              v-if="env == filter.environment || env == 'ALL'"
               :alerts="alertsByEnvironment"
               @set-alert="setAlert"
             />
