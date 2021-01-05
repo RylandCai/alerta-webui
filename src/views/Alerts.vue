@@ -393,7 +393,6 @@ export default {
       this.$router.push({ path: `/alert/${item.id}` })
       this.detailDialog = true
     },
-    // TODO
     refreshAlerts() {
       this.getEnvironments()
       this.getAlerts()

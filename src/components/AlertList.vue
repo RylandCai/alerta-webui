@@ -583,6 +583,9 @@ export default {
   created() {
     console.info('Component AlertList created.')
   },
+  beforeDestroy() {
+    console.info('Component AlertList will be destroyed.')
+  },
   methods: {
     duration(item) {
       return moment.duration(moment().diff(moment(item.receiveTime)))
