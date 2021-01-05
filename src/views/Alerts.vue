@@ -71,7 +71,6 @@
 
     <alert-detail
       v-show="detailDialog"
-      v-if="selectedId"
       :id="selectedId"
       @close="close"
     />
@@ -146,10 +145,12 @@
           :transition="false"
           :reverse-transition="false"
         >
-          <alert-list
-            :alerts="alertsByEnvironment"
-            @set-alert="setAlert"
-          />
+          <keep-alive max="1">
+            <alert-list
+              :alerts="alertsByEnvironment"
+              @set-alert="setAlert"
+            />
+          </keep-alive>
         </v-tab-item>
       </v-tabs-items>
     </v-tabs>
