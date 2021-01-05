@@ -217,7 +217,6 @@ export default {
       return this.filter.text || this.filter.status || this.filter.customer || this.filter.service || this.filter.group || this.filter.dateRange[0] || this.filter.dateRange[1]
     },
     indicators() {
-      // TODO
       return this.$config.indicators ? this.$config.indicators.queries  : []
     },
     alerts() {
