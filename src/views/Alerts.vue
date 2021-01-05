@@ -70,8 +70,7 @@
     </v-expand-transition>
 
     <alert-detail
-      v-show="detailDialog"
-      v-if="selectedId"
+      v-if="detailDialog"
       :id="selectedId"
       @close="close"
     />
@@ -146,10 +145,13 @@
           :transition="false"
           :reverse-transition="false"
         >
-          <alert-list
-            :alerts="alertsByEnvironment"
-            @set-alert="setAlert"
-          />
+          <keep-alive max="1">
+            <alert-list
+              v-if="env == filter.environment || env == 'ALL'"
+              :alerts="alertsByEnvironment"
+              @set-alert="setAlert"
+            />
+          </keep-alive>
         </v-tab-item>
       </v-tabs-items>
     </v-tabs>
@@ -166,8 +168,6 @@ import moment from 'moment'
 import { ExportToCsv } from 'export-to-csv'
 
 import AlertList from '@/components/AlertList.vue'
-import AlertIndicator from '@/components/AlertIndicator.vue'
-import AlertDetail from '@/components/AlertDetail.vue'
 import AlertListFilter from '@/components/AlertListFilter.vue'
 
 import utils from '@/common/utils'
@@ -176,8 +176,8 @@ import i18n from '../plugins/i18n'
 export default {
   components: {
     AlertList,
-    AlertIndicator,
-    AlertDetail,
+    AlertIndicator: () => import('@/components/AlertIndicator.vue'),
+    AlertDetail: () => import('@/components/AlertDetail.vue'),
     AlertListFilter
   },
   props: {
