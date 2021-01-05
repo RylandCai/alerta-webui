@@ -71,6 +71,7 @@
 
     <alert-detail
       v-show="detailDialog"
+      v-if="selectedId"
       :id="selectedId"
       @close="close"
     />
