@@ -166,9 +166,6 @@ import moment from 'moment'
 import { ExportToCsv } from 'export-to-csv'
 
 import AlertList from '@/components/AlertList.vue'
-import AlertIndicator from '@/components/AlertIndicator.vue'
-import AlertDetail from '@/components/AlertDetail.vue'
-import AlertListFilter from '@/components/AlertListFilter.vue'
 
 import utils from '@/common/utils'
 import i18n from '../plugins/i18n'
@@ -176,9 +173,9 @@ import i18n from '../plugins/i18n'
 export default {
   components: {
     AlertList,
+    AlertListFilter: () => import('../components/AlertListFilter.vue'),
     AlertIndicator: () => import('../components/AlertIndicator.vue'),
-    AlertDetail: () => import('../components/AlertDetail.vue'),
-    AlertListFilter
+    AlertDetail: () => import('../components/AlertDetail.vue')
   },
   props: {
     query: {
@@ -220,6 +217,7 @@ export default {
       return this.filter.text || this.filter.status || this.filter.customer || this.filter.service || this.filter.group || this.filter.dateRange[0] || this.filter.dateRange[1]
     },
     indicators() {
+      // TODO
       return this.$config.indicators ? this.$config.indicators.queries  : []
     },
     alerts() {
@@ -328,6 +326,7 @@ export default {
     }
   },
   created() {
+    console.info('Component Alerts created.')
     this.setSearch(this.query)
     if (this.hash) {
       let hashMap = utils.fromHash(this.hash)
@@ -338,9 +337,11 @@ export default {
     this.currentTab = this.defaultTab
     this.setKiosk(this.isKiosk)
     this.cancelTimer()
+    // TODO
     this.refreshAlerts()
   },
   beforeDestroy() {
+    console.info('Component Alerts will be destroyed.')
     this.cancelTimer()
   },
   methods: {
@@ -393,6 +394,7 @@ export default {
       this.$router.push({ path: `/alert/${item.id}` })
       this.detailDialog = true
     },
+    // TODO
     refreshAlerts() {
       this.getEnvironments()
       this.getAlerts()

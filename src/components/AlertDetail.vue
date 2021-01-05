@@ -968,6 +968,7 @@ export default {
     }
   },
   created() {
+    console.info('Component AlertDetail created.')
     this.getAlert(this.id)
     this.getNotes(this.id)
   },

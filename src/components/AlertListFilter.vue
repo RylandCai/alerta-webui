@@ -439,6 +439,7 @@ export default {
     }
   },
   created() {
+    console.info('Component AlertListFilter created.')
     if (this.$config.customer_views) {
       this.getCustomers()
     }

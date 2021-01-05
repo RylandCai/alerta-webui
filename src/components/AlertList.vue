@@ -580,6 +580,9 @@ export default {
       this.pagination = Object.assign({}, this.pagination, {rowsPerPage: val})
     }
   },
+  created() {
+    console.info('Component AlertList created.')
+  },
   methods: {
     duration(item) {
       return moment.duration(moment().diff(moment(item.receiveTime)))

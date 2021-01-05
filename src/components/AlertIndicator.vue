@@ -87,6 +87,7 @@ export default {
     }
   },
   created() {
+    console.info('Component AlertIndicator created.')
     this.cancelTimer()
     this.refreshCounts()
   },
