@@ -336,7 +336,6 @@ export default {
     this.currentTab = this.defaultTab
     this.setKiosk(this.isKiosk)
     this.cancelTimer()
-    // TODO
     this.refreshAlerts()
   },
   beforeDestroy() {
