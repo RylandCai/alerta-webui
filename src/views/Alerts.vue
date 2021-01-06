@@ -82,7 +82,10 @@
       >
         {{ env }}&nbsp;({{ environmentCounts[env] || 0 }})
       </v-tab>
+
       <v-spacer />
+
+      <!-- filter button -->
       <v-btn
         flat
         icon
@@ -92,6 +95,7 @@
         <v-icon>filter_list</v-icon>
       </v-btn>
 
+      <!-- fn button -->
       <v-menu
         bottom
         left
