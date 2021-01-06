@@ -372,7 +372,6 @@ export default {
       !this.isMute && this.$refs.audio.play()
     },
     setEnv(env) {
-      this.cancelTimer()
       this.$store.dispatch('alerts/setFilter', {
         environment: env === 'ALL' ? null : env
       })
