@@ -112,6 +112,26 @@
                 :style="fontStyle"
               >
                 {{ props.item.status | capitalize }}
+
+              </span>
+              <span
+                v-if="showNotesIcon"
+              >
+                <span
+                  v-if="lastNote(props.item)"
+                  class="pl-2"
+                >
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-icon
+                        v-bind="attrs"
+                        small
+                        v-on="on"
+                      >text_snippet</v-icon>
+                    </template>
+                    <span>{{ lastNote(props.item) }}</span>
+                  </v-tooltip>
+                </span>
               </span>
             </span>
             <span
@@ -527,6 +547,9 @@ export default {
     },
     isSearching() {
       return this.$store.state.alerts.isSearching ? 'primary' : false
+    },
+    showNotesIcon() {
+      return this.$store.getters.getPreference('showNotesIcon')
     },
     rowsPerPage() {
       return this.$store.getters.getPreference('rowsPerPage')
