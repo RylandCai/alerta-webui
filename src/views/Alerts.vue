@@ -75,12 +75,12 @@
       grow
     >
       <v-tab
-        v-for="env in environments"
-        :key="env"
-        :href="'#tab-' + env"
-        @click="setEnv(env)"
+        v-for="proj in projects"
+        :key="proj"
+        :href="'#tab-' + proj"
+        @click="setProj(proj)"
       >
-        {{ env }}&nbsp;({{ environmentCounts[env] || 0 }})
+        {{ proj }}&nbsp;({{ projectCounts[proj] || 0 }})
       </v-tab>
       <v-spacer />
       <v-btn
@@ -119,7 +119,7 @@
             {{ $t('DisplayDensity') }}
           </v-list-tile>
           <v-list-tile
-            @click="toCsv(alertsByEnvironment)"
+            @click="toCsv(alertsByProject)"
           >
             {{ $t('DownloadAsCsv') }}
           </v-list-tile>
@@ -132,16 +132,16 @@
         v-model="currentTab"
       >
         <v-tab-item
-          v-for="env in environments"
-          :key="env"
-          :value="'tab-' + env"
+          v-for="proj in projects"
+          :key="proj"
+          :value="'tab-' + proj"
           :transition="false"
           :reverse-transition="false"
         >
           <keep-alive max="1">
             <alert-list
-              v-if="env == filter.environment || env == 'ALL'"
-              :alerts="alertsByEnvironment"
+              v-if="proj == filter.project || proj == 'ALL'"
+              :alerts="alertsByProject"
               @set-alert="setAlert"
             />
           </keep-alive>
@@ -201,7 +201,7 @@ export default {
       return this.$config.audio.new || this.$store.getters.getPreference('audioURL')
     },
     defaultTab() {
-      return this.filter.environment ? `tab-${this.filter.environment}` : 'tab-ALL'
+      return this.filter.project ? `tab-${this.filter.project}` : 'tab-ALL'
     },
     filter() {
       return this.$store.state.alerts.filter
@@ -226,23 +226,25 @@ export default {
     },
     isNewOpenAlerts() {
       return this.alerts
-        .filter(alert => this.filter.environment ? this.filter.environment == alert.environment : true)
+        .filter(alert => this.filter.project ? this.filter.project == alert.project : true)
         .filter(alert => alert.status == 'open')
         .reduce((acc, alert) => acc || !alert.repeat, false)
     },
-    showAllowedEnvs() {
-      return this.$store.getters.getPreference('showAllowedEnvs')
+    // TODO: add "showAllowedProjs" to preference
+    showAllowedProjs() {
+      return false
+      // return this.$store.getters.getPreference('showAllowedProjs')
     },
-    environments() {
-      return ['ALL'].concat(this.$store.getters['alerts/environments'](this.showAllowedEnvs))
+    projects() {
+      return ['ALL'].concat(this.$store.getters['alerts/projects'](this.showAllowedProjs))
     },
-    environmentCounts() {
+    projectCounts() {
       return this.$store.getters['alerts/counts']
     },
-    alertsByEnvironment() {
+    alertsByProject() {
       return this.alerts.filter(alert =>
-        this.filter.environment
-          ? alert.environment === this.filter.environment
+        this.filter.project
+          ? alert.project === this.filter.project
           : true
       )
     },
@@ -303,12 +305,12 @@ export default {
           oldVal.descending != newVal.descending
         ) {
           this.getAlerts()
-          this.getEnvironments()
+          this.getProjects()
         }
       }
     },
     refresh(val) {
-      val || this.getAlerts() && this.getEnvironments()
+      val || this.getAlerts() && this.getProjects()
     },
     showPanel(val) {
       history.pushState(null, null, this.$store.getters['alerts/getHash'])
@@ -336,6 +338,7 @@ export default {
     },
     setFilter(filter) {
       this.$store.dispatch('alerts/setFilter', {
+        project: filter.project,
         environment: filter.environment,
         text: filter.text,
         status: filter.status ? filter.status.split(',') : null,
@@ -360,25 +363,25 @@ export default {
     setKiosk(isKiosk) {
       this.$store.dispatch('alerts/updateKiosk', isKiosk)
     },
-    getAlerts() {
-      return this.$store.dispatch('alerts/getAlerts')
-    },
-    getEnvironments() {
-      this.$store.dispatch('alerts/getEnvironments')
-    },
     playSound() {
       !this.isMute && this.$refs.audio.play()
     },
-    setEnv(env) {
+    getAlerts() {
+      return this.$store.dispatch('alerts/getAlerts')
+    },
+    getProjects() {
+      this.$store.dispatch('alerts/getProjects')
+    },
+    setProj(proj) {
       this.$store.dispatch('alerts/setFilter', {
-        environment: env === 'ALL' ? null : env
+        project: proj === 'ALL' ? null : proj
       })
     },
     setAlert(item) {
       this.$router.push({ path: `/alert/${item.id}` })
     },
     refreshAlerts() {
-      this.getEnvironments()
+      this.getProjects()
       this.getAlerts()
         .then(() => {
           this.isNewOpenAlerts && this.playSound()
@@ -397,7 +400,7 @@ export default {
     toCsv(data) {
       const options = {
         fieldSeparator: ',',
-        filename: `Alerts_${this.filter.environment || 'ALL'}`,
+        filename: `Alerts_${this.filter.project || 'ALL'}`,
         quoteStrings: '"',
         decimalSeparator: 'locale',
         showLabels: true,
