@@ -25,7 +25,7 @@ const getDefaults = () => {
     rowsPerPage: 20,
     valueWidth: 50,  // px
     textWidth: 400,  // px
-    refreshInterval: 5*1000,  // milliseconds
+    refreshInterval: 5 * 1000,  // milliseconds
     ackTimeout: null,
     shelveTimeout: null,
     queries: []
@@ -41,20 +41,20 @@ const mutations = {
   RESET_PREFS(state) {
     let q = state.queries
     Object.assign(state, getDefaults())
-    stateMerge(state, {queries: q})
+    stateMerge(state, { queries: q })
   },
   SET_QUERIES(state, queries) {
-    stateMerge(state, {queries: queries || []})
+    stateMerge(state, { queries: queries || [] })
   },
   RESET_QUERIES(state) {
-    Object.assign(state, {queries: []})
+    Object.assign(state, { queries: [] })
   },
 }
 
 const actions = {
   getUserPrefs({ dispatch, commit }) {
     return UsersApi.getMeAttributes()
-      .then(({ attributes }) =>  {
+      .then(({ attributes }) => {
         commit('SET_PREFS', attributes.prefs)
       })
       .catch((error) => dispatch('notifications/error', Error('' + i18n.t('SettingsError')), { root: true }))
@@ -76,7 +76,7 @@ const actions = {
   },
   getUserQueries({ dispatch, commit }) {
     return UsersApi.getMeAttributes()
-      .then(({ attributes }) =>  {
+      .then(({ attributes }) => {
         commit('SET_QUERIES', attributes.queries)
       })
       .catch((error) => dispatch('notifications/error', Error('' + i18n.t('SettingsError')), { root: true }))

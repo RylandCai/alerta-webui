@@ -248,11 +248,11 @@ export const en = {
   ValueWidth: 'Value Width',
   DescriptionWidth: 'Description Text Width',
   RefreshInterval: 'Refresh interval',
-  seconds: 'seconds',
+  hours: 'hours',
   minutes: 'minutes',
+  seconds: 'seconds',
   AckTimeout: 'Ack Timeout',
   ShelveTimeout: 'Shelve timeout',
-  hours: 'hours',
 
   // Profile
   Profile: 'Profile',
