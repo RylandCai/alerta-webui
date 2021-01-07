@@ -434,4 +434,13 @@ export default {
   top: 9px;
   width: 8px;
 }
+
+/*
+ * Remove fonts.css, line 48:
+ * .material-icons ... display: inline-block;
+ * also looks OK, keep this scoped to avoid side effect.
+ */
+.v-tabs .material-icons {
+  display: inline-flex;
+}
 </style>
